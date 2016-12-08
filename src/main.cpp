@@ -13,6 +13,7 @@ int main() {
   encodingMap encodingMap;
   HuffmanNode* HuffmanTree;
   string encondeStr = "";
+  float  originalSize = 0;
 
   ifstream infile; 
   infile.open("tomsawyer.txt"); 
@@ -27,14 +28,12 @@ int main() {
 	//cout << HuffmanTree->one->one << endl;
 	encodingMap = buildEncodingMap(HuffmanTree);
   //freqPairsVector = sortFrequencyTable(freqTable);
-	for(encodingMapItr iterator = encodingMap.begin(); iterator != encodingMap.end(); iterator++) {
-  		cout << (char)iterator->first << " " << iterator->second << endl;
-
-	}
-
+	
+	cout << "copmpress ···"<< endl;
 	ifstream infile2; 
 	infile2.open("tomsawyer.txt"); 
 	while (true) {
+		originalSize += 1;
       int ch = infile2.get();
       if (infile2.fail()) {
            break;
@@ -43,9 +42,15 @@ int main() {
   }  
 
   ofstream outfile("tomsawyer.pp",ios::binary | ios::app);
+ cout << "write encoding map header ···"<< endl;
+  // write encoding map header
+  for(encodingMapItr iterator = encodingMap.begin(); iterator != encodingMap.end(); iterator++) {
+  		outfile << iterator->first << ":" << iterator->second << endl;
+	}
   //cout << sizeof(encondeStrCharArr) << endl;
 	// vector<char> v(encondeStr.begin(), encondeStr.end());
 	// char* encondeStrCharArr = &v[0];
+	cout << "write encoded bits ···"<< endl;
 	const int size = encondeStr.size()/8+1;
 	const char* encondeStrCharArr = strdup(encondeStr.c_str());
   char* buffer = new char[size];
@@ -61,10 +66,9 @@ int main() {
 			j += 1;
 		}
 		buffer[i] = ch;
-		cout << ch << endl;
 	}
   outfile.write((char*) buffer,size);
-  
+  cout << "all done, copmpression rate: " <<  (float)size/originalSize <<endl;
 	return 0;
 }
 

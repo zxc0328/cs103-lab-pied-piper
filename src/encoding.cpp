@@ -41,6 +41,7 @@ void printTree(HuffmanNode* p, int indent)
 
 // not used
 freqPairs sortFrequencyTable(map<int, int>& freqTable){
+
 	freqPairs pairs;
 	for (freqTableItr itr = freqTable.begin(); itr != freqTable.end(); ++itr){
 		pairs.push_back(*itr);
@@ -54,6 +55,7 @@ freqPairs sortFrequencyTable(map<int, int>& freqTable){
 }
 
 map<int, int> buildFrequencyTable(ifstream& input) {
+	cout << "building frequence table ···"<< endl;
     map<int, int> freqTable; 
     while (true) {
       int ch = input.get();
@@ -66,6 +68,7 @@ map<int, int> buildFrequencyTable(ifstream& input) {
 }
 
 HuffmanNode* buildEncodingTree(freqTable& freqTable) {
+	cout << "building enconding tree ···"<< endl;
 		auto cmp = [](HuffmanNode& node1, HuffmanNode& node2) { return node1.count > node2.count;};
 		priority_queue<HuffmanNode, vector<HuffmanNode>,decltype(cmp)> q(cmp);
 
@@ -118,6 +121,7 @@ void traversalTree(HuffmanNode* node, encodingMap &map, string code) {
 
 
 encodingMap buildEncodingMap(HuffmanNode* HuffmanTree) {
+	cout << "building enconding map ···"<< endl;
 		encodingMap encodingMap;
 		
 		// cout << encodingTree->zero->character << endl;
