@@ -17,8 +17,6 @@ struct HuffmanNode {
                 HuffmanNode* zero = 0, HuffmanNode* one = 0);
 
     bool isLeaf() const;
-
-    //bool operator()(HuffmanNode& node1, HuffmanNode& node2);
 };
 
 #endif

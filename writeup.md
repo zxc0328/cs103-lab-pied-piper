@@ -1,5 +1,7 @@
 ##Lab：Pied Piper
 
+> 这个Lab是以斯坦福CS106B Fall2016中Lab的Huffman Encoding为蓝本构建的
+
 在这个Lab里，你将打造一个压缩工具-Pied Piper。Pied Piper将使用二叉树和优先队列来实现Huffman编码，对文件进行压缩和解压。
 
 + [模板代码]()
@@ -77,13 +79,50 @@ Pied Piper是一个命令行界面（Command Line Interface）工具。这意味
 
 ###关于我们提供的模板代码
 
-####I/O代码
+#### `main.cpp`
+
+首先解析参数，然后根据选项运行compress或者decompress。
+
+
+#### `encoding.cpp`
+
+```
+freqTable buildFrequencyTable(ifstream& input);
+HuffmanNode* buildEncodingTree(freqTable& freqTable);
+encodingMap buildEncodingMap(HuffmanNode* HuffmanTree);
+```
+
+#### `HuffmanNode.h`
+
+```
+struct HuffmanNode {
+    int character;      
+    int count;           
+    HuffmanNode* zero;  
+    HuffmanNode* one;    
+    HuffmanNode(int character = NOT_A_CHAR, int count = 0,
+                HuffmanNode* zero = 0, HuffmanNode* one = 0);
+    bool isLeaf() const;
+};
+```
+Huffman节点的定义
+
+#### `utility.cpp`
+
+```
+void wirteBit(string encodeStr, ofstream& outfile);
+void readBit(string& encodeStr, ifstream& input);
+```
 
 ###一些难点
 
 #### 如何进行以bit为单位的读/写
 
+
+
 #### 优先队列的读写
+
+#### Makefile
 
 #### 哈希表写入文件/从文件读取
 
@@ -93,6 +132,7 @@ Pied Piper是一个命令行界面（Command Line Interface）工具。这意味
 
 ###参考链接
 
-+ [](https://www.youtube.com/watch?v=BZarC2LkjeI)
++ [斯坦福CS106B Huffman Encoding Writeup](http://web.stanford.edu/class/cs106b//assn/huffman.html)
++ [斯坦福CS106B Huffman Encoding YEAH Hour](https://www.youtube.com/watch?v=BZarC2LkjeI)
 
 

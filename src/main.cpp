@@ -9,7 +9,8 @@
 using namespace std;
 
 int main(int argc, char*argv[]) {
-	string inputFileName = "";
+	string compressFileName = "";
+	string decompressFileName = "";
 	string outputFileName = "";
 	freqTable freqTable;
   encodingMap encodingMap;
@@ -19,27 +20,33 @@ int main(int argc, char*argv[]) {
   // paring args
 	parsingArgs(argc, argv, inputFileName, outputFileName);
 
-	//reading file
-	if (inputFileName.length() == 0) {
-		cout << "Please enter the name of the file to be encoded" << endl;
+	// if no filename is set, return
+	if (compressFileName.length() == 0 && decompressFileName.length == 0) {
+		cout << "Please enter the name of the file to be processed" << endl;
 		return 0;
 	}
-	infile.open(inputFileName); 
-	cout << "Reading file: " << inputFileName << "..." << endl;
+
+	if (compressFileName.length() > 0) {
+		infile.open(inputFileName); 
+		cout << "Reading file: " << inputFileName << "..." << endl;
 	
 	// building frequency table
-	freqTable = buildFrequencyTable(infile);
+		freqTable = buildFrequencyTable(infile);
 	// building encoding tree
-	HuffmanTree = buildEncodingTree(freqTable);
-	// building encoding map
-	encodingMap = buildEncodingMap(HuffmanTree);
+		HuffmanTree = buildEncodingTree(freqTable);
+		// building encoding map
+		encodingMap = buildEncodingMap(HuffmanTree);
 	
-	ifstream infileForCompress; 
-	infileForCompress.open(inputFileName); 
-	ofstream outfile(outputFileName,ios::binary | ios::app);
+		ifstream infileForCompress; 
+		infileForCompress.open(inputFileName); 
+		ofstream outfile(outputFileName,ios::binary | ios::app);
 
-	// compress
-	compress(infileForCompress, outfile, encodingMap);
+		// compress
+		compress(infileForCompress, outfile, encodingMap);
+	}else if (decompressFileName.length() > 0) {
+		// decompress(infileForCompress, outfile, encodingMap);
+	}
+	
 
 	return 0;
 }

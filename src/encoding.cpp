@@ -3,7 +3,6 @@
 #include <functional>
 #include <fstream>
 #include "encoding.h"
-#include <fstream>
 
 void compress(ifstream& input, ofstream& outfile, encodingMap& encodingMap){
 	float  originalSize = 0;
@@ -27,30 +26,16 @@ void compress(ifstream& input, ofstream& outfile, encodingMap& encodingMap){
 	}
 
 	cout << "Wriing encoded bits ···"<< endl;
+	wirteBit(encondeStr, outfile)
 
+	// compute copmpression rate
 	const int size = encondeStr.size()/8+1;
-	const char* encondeStrCharArr = strdup(encondeStr.c_str());
-  char* buffer = new char[size];
-	for (int i=0;i<size;i++) {
-		int j = 0;
-		int ch = 0;
-		while (j<7) {
-			if ((i*8+j) < encondeStr.size()) {
-			  if (encondeStrCharArr[i*8+j] == '1') {
-			  	ch += 1*(2^(7-j));
-			  }
-			}
-			j += 1;
-		}
-		buffer[i] = ch;
-	}
-  outfile.write((char*) buffer,size);
   cout << "All done, copmpression rate: " <<  (float)size/originalSize <<endl;
 }
 
-// void decompress(){
+void decompress(ifstream& input, ofstream& outfile, encodingMap& encodingMap){
 
-// }
+}
 
 map<int, int> buildFrequencyTable(ifstream& input) {
 	  cout << "Building frequence table ···"<< endl;

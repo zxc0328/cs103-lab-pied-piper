@@ -7,6 +7,8 @@
 
 using namespace std;
 
+void wirteBit(string encodeStr, ofstream& outfile);
+void readBit(string& encodeStr, ifstream& input);
 void printTree(HuffmanNode* p, int indent);
-void parsingArgs(int argCount, char** argArr, string& inputFileName, string& outputFileName);
+void parsingArgs(int argCount, char** argArr, string& compressFileName, string& decompressFileName, string& outputFileName);
 #endif
