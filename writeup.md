@@ -10,6 +10,7 @@ Pied Piper是一个命令行界面（Command Line Interface）工具。这意味
 
 `-encode`选项指定的是要编码的文件名，`-o`选项指定的是压缩后输出的文件名。
 
+###Huffman编码简介
 
 ###Step1：计算字符频率
 
@@ -68,7 +69,7 @@ Pied Piper是一个命令行界面（Command Line Interface）工具。这意味
 + 输入1（右子树），1（右子树）到达字符节点'b'，返回根节点。**11**10010001001010011
 + 输入1（右子树），0（右子树）到达字符节点'a'，返回根节点。11**10**010001001010011
 
-···以此类推。就得到了解码后的文件。
+以此类推。就得到了解码后的文件。
 
 
 
@@ -76,11 +77,15 @@ Pied Piper是一个命令行界面（Command Line Interface）工具。这意味
 
 ###关于我们提供的模板代码
 
-读取CLI参数
+####I/O代码
 
 ###一些难点
 
 #### 如何进行以bit为单位的读/写
+
+#### 优先队列的读写
+
+#### 哈希表写入文件/从文件读取
 
 ###关于Pied Piper
 
@@ -88,5 +93,6 @@ Pied Piper是一个命令行界面（Command Line Interface）工具。这意味
 
 ###参考链接
 
++ [](https://www.youtube.com/watch?v=BZarC2LkjeI)
 
 

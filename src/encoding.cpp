@@ -1,61 +1,59 @@
 #include <map>
 #include <queue>
-#include <iomanip>
 #include <functional>
+#include <fstream>
 #include "encoding.h"
 #include <fstream>
 
-// void printTree(HuffmanNode* node, int indent) {
+void compress(ifstream& input, ofstream& outfile, encodingMap& encodingMap){
+	float  originalSize = 0;
+	string encondeStr = "";
 	
-// 	if (!(node->zero == 0)) {
-// 			printTree(node->zero, indent + 4);
-// 	}
-// 	if (!(node->one == 0)) {
-// 			printTree(node->one, indent + 4);
-// 	}
-// 	if (indent) {
-// 		std::cout << std::setw(indent) << ' ';
-// 	}
-	
-// 	cout<< node->character << "\n ";
-// }
+	cout << "Copmpress ···"<< endl;
 
-void printTree(HuffmanNode* p, int indent)
-{
+	while (true) {
+		originalSize += 1;
+      int ch = input.get();
+      if (input.fail()) {
+           break;
+      }
+      encondeStr += encodingMap[ch];
+  }  
 
-        if(p->one) {
-            printTree(p->one, indent+4);
-        }
-        if (indent) {
-            std::cout << std::setw(indent) << ' ';
-        }
-        if (p->one) std::cout<<" /\n" << std::setw(indent) << ' ';
-        std::cout<< p->count <<  "\n ";
-        if(p->zero) {
-            std::cout << std::setw(indent) << ' ' <<" \\\n";
-            printTree(p->zero, indent+4);
-        }
-}
+ 	cout << "Writing encoding map header ···"<< endl;
 
-
-
-// not used
-freqPairs sortFrequencyTable(map<int, int>& freqTable){
-
-	freqPairs pairs;
-	for (freqTableItr itr = freqTable.begin(); itr != freqTable.end(); ++itr){
-		pairs.push_back(*itr);
+  for(encodingMapItr iterator = encodingMap.begin(); iterator != encodingMap.end(); iterator++) {
+  		outfile << iterator->first << ":" << iterator->second << endl;
 	}
 
-	// sorting with lambda
-	sort(pairs.begin(), pairs.end(), [] (pair<int, int>& a, pair<int, int>& b) -> bool{
-  	return a.second > b.second;
-  });
-	return pairs;
+	cout << "Wriing encoded bits ···"<< endl;
+
+	const int size = encondeStr.size()/8+1;
+	const char* encondeStrCharArr = strdup(encondeStr.c_str());
+  char* buffer = new char[size];
+	for (int i=0;i<size;i++) {
+		int j = 0;
+		int ch = 0;
+		while (j<7) {
+			if ((i*8+j) < encondeStr.size()) {
+			  if (encondeStrCharArr[i*8+j] == '1') {
+			  	ch += 1*(2^(7-j));
+			  }
+			}
+			j += 1;
+		}
+		buffer[i] = ch;
+	}
+  outfile.write((char*) buffer,size);
+  cout << "All done, copmpression rate: " <<  (float)size/originalSize <<endl;
 }
 
+// void decompress(){
+
+// }
+
 map<int, int> buildFrequencyTable(ifstream& input) {
-	cout << "building frequence table ···"<< endl;
+	  cout << "Building frequence table ···"<< endl;
     map<int, int> freqTable; 
     while (true) {
       int ch = input.get();
@@ -68,7 +66,7 @@ map<int, int> buildFrequencyTable(ifstream& input) {
 }
 
 HuffmanNode* buildEncodingTree(freqTable& freqTable) {
-	cout << "building enconding tree ···"<< endl;
+		cout << "Building enconding tree ···"<< endl;
 		auto cmp = [](HuffmanNode& node1, HuffmanNode& node2) { return node1.count > node2.count;};
 		priority_queue<HuffmanNode, vector<HuffmanNode>,decltype(cmp)> q(cmp);
 
@@ -76,7 +74,6 @@ HuffmanNode* buildEncodingTree(freqTable& freqTable) {
  	 		HuffmanNode node;
  	 		node.character = iterator->first;
  	 		node.count = iterator->second;
- 			
  	 		q.push(node);
 		}
 
@@ -108,7 +105,6 @@ void traversalTree(HuffmanNode* node, encodingMap &map, string code) {
 	if (node->character > 0) {
 		map[node->character] = code;
 	}
-
 	if (!(node->zero == 0)) {
 			traversalTree(node->zero, map, code+"0");
 	}
@@ -117,17 +113,10 @@ void traversalTree(HuffmanNode* node, encodingMap &map, string code) {
 	}
 }
 
-
-
-
 encodingMap buildEncodingMap(HuffmanNode* HuffmanTree) {
-	cout << "building enconding map ···"<< endl;
+		cout << "Building enconding map ···"<< endl;
 		encodingMap encodingMap;
-		
-		// cout << encodingTree->zero->character << endl;
-		// cout << encodingTree->one->character << endl;
     traversalTree(HuffmanTree->zero, encodingMap, "0");
     traversalTree(HuffmanTree->one, encodingMap, "1");
-    //printTree(HuffmanTree, 0);
     return encodingMap;             
 }

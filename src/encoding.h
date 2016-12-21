@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <fstream>
 #include "HuffmanNode.h"
 
 using namespace std;
@@ -20,5 +21,6 @@ freqPairs sortFrequencyTable(map<int, int>& freqTable);
 freqTable buildFrequencyTable(ifstream& input);
 HuffmanNode* buildEncodingTree(freqTable& freqTable);
 encodingMap buildEncodingMap(HuffmanNode* HuffmanTree);
-void traversalTree(HuffmanNode* node, encodingMap* encodingMap,string code);
+void traversalTree(HuffmanNode* node, encodingMap& map,string code);
+void compress(ifstream& input, ofstream& output, encodingMap& encodingMap);
 #endif
